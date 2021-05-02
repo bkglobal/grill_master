@@ -1,16 +1,16 @@
 <div class="container">
     {{#unless error}}
-        {{#if data}}
-            <div style="width: {{data.grill.width}}px; height: {{data.grill.height}}px;" class="grill-parent">
-                {{#if dataToDisplay}}
-                    {{#each dataToDisplay}}
-                        <div style="width: {{this.width}}px; height: {{this.height}}px; top: {{this.top}}px; left: {{this.left}}px" class="grill-child" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
-
-                        </div>
-                    {{/each}}
-                {{/if}}
-            </div>
+    {{#if data}}
+    <div style="width: {{data.grill.width}}px; height: {{data.grill.height}}px;" class="grill-parent mt-4">
+        {{#if dataToDisplay}}
+        {{#each dataToDisplay}}
+        <div style="width: {{this.width}}px; height: {{this.height}}px; top: {{this.top}}px; left: {{this.left}}px"
+            class="grill-child" data-toggle="tooltip" data-placement="top" title={{this.title}}>
+        </div>
+        {{/each}}
         {{/if}}
+    </div>
+    {{/if}}
     {{/unless}}
     {{#if error}}
     <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
@@ -20,8 +20,8 @@
         </button>
     </div>
     {{/if}}
-    
-    <div class="row">
+
+    <div class="row mt-4">
         <div class="col-md-8 col-sm-12">
             <form action="/saveGrill" method="post">
                 <textarea rows="15" name="data" class="form-control" id="validationTextarea"
@@ -32,8 +32,22 @@
         <div class="col-md-4 col-sm-12">
             <ul class="list-group">
                 <li class="list-group-item list-group-item-dark" aria-disabled="true">Items out of grill</li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col">Type</div>
+                        <div class="col">Size</div>
+                        <div class="col">Count</div>
+                    </div>
+                </li>
+
                 {{#each remaining_data}}
-                    <li class="list-group-item">{{this.title}}</li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col">{{this.title}}</div>
+                        <div class="col">{{this.width}}x{{this.height}}</div>
+                        <div class="col">{{this.count}}</div>
+                    </div>
+                </li>
                 {{/each}}
             </ul>
         </div>

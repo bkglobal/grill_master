@@ -1,5 +1,5 @@
 import { jsonValidator } from "../../validations/validator";
-import {analyseGrillManager, getPreparedData, prepareGrillData} from "../../services/grill-service";
+import {analyseGrillManager, getPreparedData, prepareGrillData, transformRemainingData} from "../../services/grill-service";
 import data from "./data";
 class AppController {
 
@@ -48,7 +48,7 @@ class AppController {
                 return res.redirect('/');
             }
 
-            let grillData = prepareGrillData(data.grill.grillItems);
+            let grillData = prepareGrillData(data.grill.grillItems.map((e, index) => ({...e, itemIndex: index+1})));
             grillData = grillData.map((e, index) => ({...e, id: index+1}));    
             let result = analyseGrillManager(data.grill.width, data.grill.height, grillData);
             // console.log('The analytical values and result is : ', result);
@@ -56,8 +56,8 @@ class AppController {
 
             console.log(resultIds);
 
-            let remaning = grillData.filter(e => !(resultIds.includes(e.id)));
-
+            let remaning = transformRemainingData(grillData.filter(e => !(resultIds.includes(e.id))));
+            console.log(remaning);
             this.grillData.data = data;
             this.grillData.dataToDisplay = result;
             this.grillData.remaining_data = remaning;

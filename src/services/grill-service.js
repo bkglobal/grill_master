@@ -12,6 +12,8 @@ export function analyseGrillManager(width, height, data) {
     let occupiedCalculatedObjs = [];
     let currRowIndex = -1;
     let isNext = true;
+    occupiedObj = [];
+    occupiedCalculatedObj = [];
     do {
 
         const {occupiedRowObj, remaining, next} = calculateIteration(currRowIndex, width, width, height, data, occupiedRowObjs[currRowIndex], occupiedCalculatedObjs[currRowIndex]);
@@ -40,7 +42,6 @@ export function calculateIteration(index, width, remainingWidth, height, data) {
     } else {
         console.log('in else');
         console.log('index : ', index+1);
-
         let restObjects = nestedCommulativeIterate(width, height, data)
         let remainingData = data.filter(e => !(e.id===restObjects.id));
         return {occupiedRowObj: [...restObjects], remaining: remainingData, next: false};
@@ -51,7 +52,6 @@ export function nestedCommulativeIterate(width, height, data) {
     let restObjects = [];
     data.forEach(element => {
         let obj = compareCommutativeWithObj(occupiedCalculatedObj, element, width, height);
-        console.log('object : ', obj)
         if(obj) {
             restObjects.push(obj);
         }
@@ -61,8 +61,7 @@ export function nestedCommulativeIterate(width, height, data) {
 
 function compareCommutativeWithObj(commutativeArr, obj, width, height) {
     console.log('height is ', height, obj.height);
-    let filteredArr = commutativeArr.filter(e => ((obj.width<=e.width) && (height>(obj.height+e.height+e.top))));
-    console.log('filterd array is : ', filteredArr);
+    let filteredArr = commutativeArr.filter(e => ((obj.width<=e.width) && (height>=(obj.height+e.height+e.top))));
     if(!filteredArr[0]) {
         // Logic to Check multiple div width. 
         return false
@@ -98,6 +97,12 @@ export function getMaxWidth (width, height, data, parentWidth) {
     return {
         maxWidthOBj,
     }
+}
+
+export function transformRemainingData(data) {
+    let remainingObj = {}
+    data.forEach((element) => remainingObj[element.itemIndex]={...element, count: remainingObj[element.itemIndex] ? remainingObj[element.itemIndex].count + 1 : element.count} );
+    return Object.values(remainingObj);
 }
 
 

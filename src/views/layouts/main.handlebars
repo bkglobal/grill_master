@@ -5,9 +5,11 @@
     <meta charset="utf-8">
     <title>Grill Master Intelligent App</title>
     <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css">
-   
-    {{!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> --}}
+
+    {{!--
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    --}}
     <link rel="stylesheet" href="/public/assets/css/custom.css" />
 </head>
 
@@ -19,14 +21,22 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    {{!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    {{!--
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script> --}}
-          <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/public/assets//bootstrap/js/popper.min.js"></script>
+    <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
     <script>
         $('.toast').toast('show')
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
+        })
+       
+    </script>
+    <script>
+         $(function () {
+            $('[data-toggle="popover"]').popover()
         })
     </script>
 </body>
