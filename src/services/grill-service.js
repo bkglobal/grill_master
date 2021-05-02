@@ -1,10 +1,8 @@
-// const {occupiedRowObj, remaining} = getPreparedData(width, width, height, data, occupiedRowObjs[currRowIndex], occupiedCalculatedObjs[currRowIndex]);
-// occupiedRowObjs.push(occupiedRowObj);
-// data = remaining;
-
-
-
+// We will maintain temperory element array.
 let occupiedObj = [];
+// This is the array in which we calculate and learn the edges and position of element.
+// If element width is 100 and heigt is 50 than next element will place after
+// width 100 and heiht 50;
 let occupiedCalculatedObj = [];
 
 export function analyseGrillManager(width, height, data) {
@@ -15,10 +13,8 @@ export function analyseGrillManager(width, height, data) {
     occupiedObj = [];
     occupiedCalculatedObj = [];
     do {
-
         const {occupiedRowObj, remaining, next} = calculateIteration(currRowIndex, width, width, height, data, occupiedRowObjs[currRowIndex], occupiedCalculatedObjs[currRowIndex]);
         occupiedRowObjs.push([...occupiedRowObj]);
-
         occupiedRowObj = [];
         data = remaining;
         currRowIndex++;
@@ -30,7 +26,8 @@ export function analyseGrillManager(width, height, data) {
 
 export function calculateIteration(index, width, remainingWidth, height, data) {
     if(index+1 === 0) {
-        console.log('index : ', index+1);
+        // This will have maximum width element which is less than the total width
+        // and height of parent container
         const { maxWidthOBj } = getMaxWidth(remainingWidth, height, data, width);
         if(maxWidthOBj) {            
             occupiedObj.push(maxWidthOBj);
@@ -40,8 +37,6 @@ export function calculateIteration(index, width, remainingWidth, height, data) {
         }
         return {occupiedRowObj: [...occupiedObj], remaining: data.filter(e => !(occupiedObj.map(e => e.id).includes(e.id))), next: true};
     } else {
-        console.log('in else');
-        console.log('index : ', index+1);
         let restObjects = nestedCommulativeIterate(width, height, data)
         let remainingData = data.filter(e => !(e.id===restObjects.id));
         return {occupiedRowObj: [...restObjects], remaining: remainingData, next: false};
@@ -60,7 +55,6 @@ export function nestedCommulativeIterate(width, height, data) {
 }
 
 function compareCommutativeWithObj(commutativeArr, obj, width, height) {
-    console.log('height is ', height, obj.height);
     let filteredArr = commutativeArr.filter(e => ((obj.width<=e.width) && (height>=(obj.height+e.height+e.top))));
     if(!filteredArr[0]) {
         // Logic to Check multiple div width. 
@@ -81,7 +75,6 @@ function compareCommutativeWithObj(commutativeArr, obj, width, height) {
 
 
 export function getMaxWidth (width, height, data, parentWidth) {
-    console.log('get max width called');
     let maxWidthOBj = null;
     data.forEach(element => {
         if((element.width<=width) && (element.height <= height)) {
@@ -110,53 +103,4 @@ export function prepareGrillData(data) {
     let grillData = [];
     data.forEach((element, index) => grillData[index]=Array(element.count).fill().map(e => ({...element, count: 1})));
     return grillData.flat(1);
-}
-
-
-export function getPreparedData(width, remainingWidth, height,  data, prevData, prevCalculatedData) {
-    const { remaining, maxWidthOBj } = getMaximumWidth(remainingWidth, height, data, prevData, prevCalculatedData);
-    
-    if(!maxWidthOBj) return {occupiedRowObj: [...occupiedObj], remaining};
-
-    occupiedObj.push(maxWidthOBj);
-    
-    const optimalFilter = remaining.filter(e => e.width <= remainingWidth);
-    if(optimalFilter.length > 0) {
-        if(optimalFilter.length === 1) {
-            occupiedObj.push(optimalFilter[0])
-        } else {
-            getPreparedData(width, width-occupiedObj.reduce((acc, cv) => acc+cv.width,0), height, remaining);
-        }
-    } else {
-        return {occupiedRowObj: [...occupiedObj], remaining};
-    }
-}
-export function getMaximumWidth (width, height, data, prevData, prevCalculatedData) {
-    let maxWidthOBj = null;
-    let calculatedObjs = [];
-    let remaining = [];
-    data.forEach(element => {
-        let filteredPrevData = prevCalculatedData.filter(e => element<=e.height);
-        let isHeightValid = (!prevData) ? (element.height<=height) : filteredPrevData[0];
-        if((element.width<=width) && isHeightValid) {
-            if(maxWidthOBj && ( maxWidthOBj.width < element.width)) {
-                remaining.push(maxWidthOBj);
-                maxWidthOBj = {element, left: Math.abs(width)};
-                calculatedObjs.push()
-            } else {
-                maxWidthOBj = {element, left: Math.abs(width)};
-            }
-        } else {
-            remaining.push(element)
-        }
-    });
-    return {
-        maxWidthOBj,
-        remaining
-    }
-}
-
-function getMaxHeight(cummulativeHeight, heightArr, element) {
-    let height = null;
-    heightArr.forEach(el => (el.height+element.height))
 }
